@@ -2,31 +2,17 @@ const api = new Adapter()
 const albumBox = document.querySelector(".album_box")
 const newFormHolder = document.getElementById('new_form_holder')
 
-function createAlbumDiv(album){
+function createAlbumDiv(album, func){
   return`
-  <form class="render_album_container" data-album-id=${album.collectionId}>
+  <form class="render_album_container" data-album-id=${func}>
     <h3 id='album_name'>${album.collectionName}</h3>
     <img src="${album.artworkUrl100}" alt="album artwork" onerror="if (this.src != 'error.jpg') this.src = 'error.jpg';" style="width:175px;height:175px;">
     <h1 id='album_artist'>${album.artistName}</h1>
     <p id='album_price'>${album.collectionPrice}</p>
-    <button id='like_album' data-album-id=${album.collectionId} type="submit">i dig it</button>
+    <button id='like_album' data-album-id=${func} type="submit">i dig it</button>
     <br>
   </form>`
 }
-//make one dynamic delete other
-function renderLikesDiv(album){
-  return`
-  <form class="render_album_container" data-album-id=${album.id}>
-    <h3 id='album_name'>${album.collectionName}</h3>
-    <img src="${album.artworkUrl100}" alt="album artwork" onerror="if (this.src != 'error.jpg') this.src = 'error.jpg';" style="width:175px;height:175px;">
-    <h1 id='album_artist'>${album.artistName}</h1>
-    <p id='album_price'>${album.collectionPrice}</p>
-    <button id='delete_album' data-album-id=${album.id} type="submit">Fuck this album</button>
-    <br>
-  </form>`
-}
-
-
 
 function createNewForm(){
 return`<form id="new_form" action="index.html" method="post">
@@ -74,7 +60,7 @@ function appendAlbums(e){
   albumBox.innerHTML=''
   api.searchAlbums(e).then(albums =>{
     albums.results.forEach(album =>{
-      albumBox.innerHTML+=createAlbumDiv(album)
+      albumBox.innerHTML+=createAlbumDiv(album, album.collectionId)
     })
   })
 }
@@ -85,7 +71,7 @@ function renderLikedAlbums(e){
   albumBox.innerHTML=''
   api.getUserLikes(e).then(user =>{
     user.albums.forEach(album =>{
-      albumBox.innerHTML+=renderLikesDiv(album)
+      albumBox.innerHTML+=createAlbumDiv(album, album.Id)
     })
   })
 }

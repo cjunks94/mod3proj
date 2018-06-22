@@ -8,8 +8,9 @@ document.addEventListener('DOMContentLoaded', function(){
     }else if(e.target.id === 'render_user_likes'){
       renderLikedAlbums(e.target.dataset.userId)
     }else if(e.target.id === 'delete_album'){
-      api.deleteFav(1,e.target.dataset.albumId).then(x =>{
-      renderLikedAlbums(e.target.dataset.userId)})
+      api.deleteFav(1,e.target.dataset.albumId)
+      e.target.parentElement.remove()
+      // .then(x =>{renderLikedAlbums(e.target.dataset.userId)})
     }
   })
 
